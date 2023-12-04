@@ -1,3 +1,4 @@
+
 function findpos(obj) {
     var curtop = 0;
     if (obj.offsetParent) {
@@ -14,11 +15,20 @@ function GoTo(obj) {
 function removeThis(jNode) {
     jNode.remove()
 }
+function clickz(obj){
+    triggerEvent (obj, "popstate");
+    triggerEvent (obj, "focus");
+    triggerEvent (obj, "touchstart");
+    triggerEvent (obj, "click");
+}
 
 function copyToClipboard(inputname) {
     navigator.clipboard.writeText(inputname)
 }
-
+function qsit (selector, text){
+  return Array.from(document.querySelectorAll(selector))
+    .find(el => el.textContent.includes(text));
+}
 function containsAnyString(str, substrings) {
     for (var i = 0; i != substrings.length; i++) {
         var substring = substrings[i];
@@ -28,7 +38,15 @@ function containsAnyString(str, substrings) {
     }
     return null;
 }
-
+function containsAnyStringLower(str, substrings) {
+    for (var i = 0; i != substrings.length; i++) {
+        var substring = substrings[i].toLowerCase()
+        if (str.indexOf(substring) != -1) {
+            return substring;
+        }
+    }
+    return null;
+}
 function containsAnyTrue(str, substrings) {
     for (var i = 0; i != substrings.length; i++) {
         var substring = substrings[i];
@@ -96,7 +114,15 @@ function ClickThis(jNode) {
     clickEvent.initEvent('click', true, true);
     jNode.dispatchEvent(clickEvent);
 }
-
+function getInnermostHover() {
+    var n = document.querySelector(":hover");
+    var nn;
+    while (n) {
+        nn = n;
+        n = nn.querySelector(":hover");
+    }
+    return nn
+}
 Element.prototype.appendBefore = function(element) {
     element.parentNode.insertBefore(this, element);
 }, false;
@@ -104,6 +130,14 @@ Element.prototype.appendBefore = function(element) {
 Element.prototype.appendAfter = function(element) {
     element.parentNode.insertBefore(this, element.nextSibling);
 }, false;
+
+function RecursiveUnbind($jElement) {
+        $jElement.unbind();
+        $jElement.removeAttr('onclick');
+        $jElement.children().each(function () {
+            RecursiveUnbind($(this));
+        });
+}
 
 function saveData() {
     var asdasd = document.createElement("a");
