@@ -232,7 +232,6 @@ const floatstyle =  `
 }
 .tagList {
      width:unset;
-    
 }
 #myButtons {
     width:100%;
