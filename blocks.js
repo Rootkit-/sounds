@@ -455,7 +455,6 @@ const blocktitle = [
 	'lezdom',
 	'glownigger central',
 ] //blocktitle
-
 const blockexact= [
 	'wholesomeness',
 	'popping',
@@ -797,12 +796,7 @@ const blocks = [
 	'less porn, more idiots with guns',
 	'masculinity / inspirational',
 	'post sports',
-	'zoom bombing',
-	'cool anime webm',
-	'webms that need context',
-	'post demoralizing',
-]
- //block
+]; //block
 const blocksissy = [
 	'transparent',
 	'transfer',
@@ -827,6 +821,7 @@ const blockblackz = [
 	'blacked waifu',
 	'black tiktok girls',
 	'black bbw',
+	'israel',
 	'blacks to a minimum',
 	'white male on black',
 	'nigger rekt thread',
@@ -885,7 +880,6 @@ const blockblackz = [
 	'bfwf',
 	'black stuff to a minimum',
 	'no bestiality/bbc',
-	'wmww',
 ] //blockblack
 
 const blacktitle = [

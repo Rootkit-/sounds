@@ -9,8 +9,9 @@ function findpos(obj) {
     }
 }
 function GoTo(obj) {
-    var ot = findPos(obj);
-    window.scrollTo(0,ot-75);
+    var ot = findpos(obj);
+    //window.scrollTo(0,ot-75);
+    window.scrollTo(0,ot);
 }
 function removeThis(jNode) {
     jNode.remove()
@@ -79,7 +80,33 @@ function replaceVal(selector, value) {
     }
     return el;
 }
-
+function getPageFromUrl( url ) {
+    const match = url.match(/(?:\/page\/|[?&]page=)([1-9]\d*)/)
+    if ( match ) {
+        return Number(match[1]);
+    }
+    return 1;
+}
+function CE(type, text, floatclass, floatid, floatstyle) {
+    const button = document.createElement(type)
+    if (text !== undefined) button.textContent = text
+    if (floatclass !== undefined) button.className = floatclass
+    if (floatid !== undefined) button.id = floatid
+    if (floatstyle !== undefined) button.style = floatstyle
+    //button.style = "clear: left"
+    return button
+}
+function CA(text, floathref, floatclass, floatid, floatstyle, floattarg) {
+    const button = document.createElement('a')
+    if (text !== undefined) button.textContent = text
+    if (floatclass !== undefined) button.className = floatclass
+    if (floatid !== undefined) button.id = floatid
+    if (floatstyle !== undefined) button.style = floatstyle
+    if (floathref !== undefined) button.href = floathref
+    if (floattarg !== undefined) button.target = floattarg
+    //button.style = "clear: left"
+    return button
+}
 function addFloatButtonss(text, floatclass, floatid, floatstyle) {
     const button = document.createElement('button')
     if (text !== undefined) button.textContent = text
