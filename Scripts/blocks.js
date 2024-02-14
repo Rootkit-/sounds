@@ -454,7 +454,12 @@ const blocktitle = [
 	'middle eastern women thread',
 	'lezdom',
 	'glownigger central',
-] //blocktitle
+	'ack-tually',
+	'schizo',
+	'ebony babes',
+	'maidcore',
+]	
+ //blocktitle
 
 const blockexact= [
 	'wholesomeness',
