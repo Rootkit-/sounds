@@ -173,7 +173,7 @@ function saveData() {
     return function(data, fileName) {
         var blob = new Blob([data], {
             type: "octet/stream"
-        });
+            });
         var url = window.URL.createObjectURL(blob);
         asdasd.href = url;
         asdasd.download = fileName;
