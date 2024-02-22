@@ -111,6 +111,14 @@ function getPageFromUrl(url) {
 		return 1;
 }
 
+function getString(url, regg) {
+	const match = url.match(regg)
+		if (match) {
+			return match[1]
+		}
+		return null
+}
+
 function CE(type, text, floatclass, floatid, floatstyle) {
 	const button = document.createElement(type)
 		if (text !== undefined)
