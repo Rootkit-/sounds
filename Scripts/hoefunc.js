@@ -104,7 +104,7 @@ function replaceVal(selector, value) {
 }
 
 function getPageFromUrl(url) {
-	const match = url.match(/(?:\/page\/|[?&]page=)([1-9]\d*)/)
+	const match = url.match(/(?:\/page\/|[?&]page=|page-)([1-9]\d*)/)
 		if (match) {
 			return Number(match[1]);
 		}
