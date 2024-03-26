@@ -242,8 +242,9 @@ localStorage.notifyProps = JSON.stringify({
     },
     lastNthAudio: 0
 });
-async function notify(msg, position, notifDuration, shadow) {
+async function notify(msg, position, size, notifDuration) {
 	let cjsMessages;
+	console.log(msg + ' ' + position + ' ' + notifDuration)
 	notifDuration = notifDuration ? +notifDuration : 1.75;
 	const fadeDuration = .3,
 		  vpYoffset = 23,
@@ -251,8 +252,18 @@ async function notify(msg, position, notifDuration, shadow) {
 	const notificationDiv = document.createElement("div");
 	notificationDiv.id = Math.floor(randomFloat() * 1e6) + Date.now();
 	notificationDiv.classList.add("hoecat-notif");
-	notificationDiv.innerText = msg;
+	const notificationpic = document.createElement("img");
+	notificationpic.classList.add("hoecat-notif-img");
+	notificationpic.style = 'max-height:50px;width:auto;height: inherit;object-fit: contain;vertical-align: middle;'
+	notificationpic.src ="https://raw.githubusercontent.com/Rootkit-/sounds/main/images/cat.png";
+	notificationDiv.append(notificationpic);
+	const notificationspan = document.createElement("span");
+	notificationspan.classList.add("hoecat-notif-span");
+	notificationspan.style = 'opacity: 1;color:white;vertical-align: middle;'
+	notificationspan.innerText = msg;
+	notificationDiv.append(notificationspan);
 	document.body.append(notificationDiv);
+
 	const closeBtn = document.createElement("div");
 	closeBtn.title = cjsMessages?.tooltip_dismiss || "Dismiss";
 	closeBtn.classList.add("notif-close-btn");
@@ -281,7 +292,7 @@ async function notify(msg, position, notifDuration, shadow) {
 			notifStyle.setAttribute("last-updated", thisUpdated.toString());
 			document.head.append(notifStyle)
 		}
-		notifStyle.innerText = ".hoecat-notif {" + "background-color: black ; padding: 5px 8px 5px 8px ; border-radius: 11px ; border: 1px solid #f5f5f7 ;" + "opacity: 0 ; position: fixed ; z-index: 9999 ; font-size: 1.8rem ; color: white ;" + "-webkit-user-select: none ; -moz-user-select: none ; -ms-user-select: none ; user-select: none ;" + `transform: translateX(${!notificationDiv.isRight?"-":""}35px) ;` + (shadow ? "box-shadow: -8px 13px 25px 0 " + (/\b(shadow|on)\b/gi.test(shadow) ? "gray" : shadow) : "") + "}" + ".notif-close-btn { cursor: pointer ; float: right ; position: relative ; right: -4px ; margin-left: -3px ;" + "display: grid }" + "@keyframes notif-zoom-fade-out { 0% { opacity: 1 ; transform: scale(1) }" + "15% { opacity: 0.35 ; transform: rotateX(-27deg) scale(1.05) }" + "45% { opacity: 0.05 ; transform: rotateX(-81deg) }" + "100% { opacity: 0 ; transform: rotateX(-180deg) scale(1.15) }}"
+		notifStyle.innerText = ".hoecat-notif {" + "font-family: sans-serif; font-weight: bold; background-color: black; padding: 5px 8px 5px 8px ; border-radius: 11px ; border: 1px solid #f5f5f7 ;" + "opacity: 1 ; position: fixed ; z-index: 9999 ; font-size:" + size +"px; color: white ;" + "-webkit-user-select: none ; -moz-user-select: none ; -ms-user-select: none ; user-select: none ;" + `transform: translateX(${!notificationDiv.isRight?"-":""}35px) ;`  + ".notif-close-btn { cursor: pointer ; float: right ; position: relative ; right: -4px ; margin-left: -3px ;" + "display: grid }" + "@keyframes notif-zoom-fade-out { 0% { opacity: 1 ; transform: scale(1) }" + "15% { opacity: 0.35 ; transform: rotateX(-27deg) scale(1.05) }" + "45% { opacity: 0.05 ; transform: rotateX(-81deg) }" + "100% { opacity: 0 ; transform: rotateX(-180deg) scale(1.15) }}"
 	}
 	let notifyProps = JSON.parse(localStorage.notifyProps);
 	notifyProps.queue[notificationDiv.quadrant].push(notificationDiv.id);
@@ -302,13 +313,13 @@ async function notify(msg, position, notifDuration, shadow) {
 			} catch (err) {}
 		}
 	   setTimeout(() => {
-		   notificationDiv.style.opacity = isDarkMode() ? .8 : .67;
 		   notificationDiv.style.transform = "translateX(0)";
 		   notificationDiv.style.transition = "transform 0.15s ease, opacity 0.15s ease"
+		   notificationDiv.style.filter = 'alpha(opacity=60)'
 	   }, 10);
 	   const hideDelay = fadeDuration > notifDuration ? 0 : notifDuration - fadeDuration;
-	   let dismissAudio, dismissAudioTID;
-	   if (isFFtmScript) {
+	   //let dismissAudio, dismissAudioTID;
+	   /*if (isFFtmScript) {
 		   let nthAudio;
 		   do {
 			   nthAudio = Math.floor(Math.random() * 3) + 1
@@ -318,12 +329,12 @@ async function notify(msg, position, notifDuration, shadow) {
 		   dismissAudio = new Audio;
 		   dismissAudio.src = "https://raw.githubusercontent.com/KudoAI/chatgpt.js/main/media/audio/notifications/bubble-pop/src/bubble-pop-1.wav"
 		   dismissAudioTID = setTimeout(() => dismissAudio.play().catch(() => {}), hideDelay * 1e3)
-	   }
+	   }*/
 	   const dismissNotif = () => {
 		   notificationDiv.style.animation = `notif-zoom-fade-out ${fadeDuration}s ease-out`;
-		   if (isFFtmScript) dismissAudio?.play().catch(() => {});
+		   //if (isFFtmScript) dismissAudio?.play().catch(() => {});
 		   clearTimeout(dismissFuncTID);
-		   clearTimeout(dismissAudioTID)
+		   //clearTimeout(dismissAudioTID)
 	   };
 	   const dismissFuncTID = setTimeout(dismissNotif, hideDelay * 1e3);
 	   closeSVG.addEventListener("click", dismissNotif, {
