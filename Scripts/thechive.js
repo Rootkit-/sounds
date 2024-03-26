@@ -1,4 +1,6 @@
 const remove = [
+	'these tees',
+	'hour collection',
 	'available for',
 	'until they are gone',
 	'for one day only',
