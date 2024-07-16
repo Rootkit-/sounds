@@ -7,13 +7,89 @@ function findpos(obj) {
 		return curtop;
 	}
 }
+function selectItemInDropdownList(selectElement, ov) {
+  const optionToSelect = '' + ov
+  const options = selectElement.getElementsByTagName('option')
+  for (const optionEle of options) {
+    if (optionToSelect === optionEle.innerText || optionToSelect === optionEle.value) {
+      optionEle.selected = true // selects this option
+      return true
+    }
+  }
+  return false // failed
+}
+function checkVisible(elm) {
+	var rect = elm.getBoundingClientRect();
+	var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+	return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+}
 
+function _get_window_height() {
+	return window.innerHeight ||
+		document.documentElement.clientHeight ||
+		document.body.clientHeight || 0;
+}
+
+/** Get current absolute window scroll position */
+function _get_window_Yscroll() {
+	return window.pageYOffset ||
+		document.body.scrollTop ||
+		document.documentElement.scrollTop || 0;
+}
+
+/** Get current absolute document height */
+function _get_doc_height() {
+	return Math.max(
+		document.body.scrollHeight || 0,
+		document.documentElement.scrollHeight || 0,
+		document.body.offsetHeight || 0,
+		document.documentElement.offsetHeight || 0,
+		document.body.clientHeight || 0,
+		document.documentElement.clientHeight || 0
+	);
+}
+
+/** Get current vertical scroll percentage*/
+function _get_scroll_percentage() {
+	return (
+		(_get_window_Yscroll() + _get_window_height()) / _get_doc_height()
+	) * 100;
+}
 function GoTo(obj) {
 	var ot = findpos(obj);
 	//window.scrollTo(0,ot-75);
 	window.scrollTo(0, ot);
 }
+function timereload() {
+	var currdate = Date.now();
+	var reloaddate = currdate + 1800000
 
+	var hidden = "hidden"
+	var visibilityChange = "visibilitychange"
+	var visibilityState = "visibilityState";
+
+	var document_hidden = document[hidden];
+
+	document.addEventListener(visibilityChange, function() {
+		if(document_hidden != document[hidden]) {
+			if(document[hidden]) {
+				// Document hidden
+			} else {
+				if( Date.now() >= reloaddate){
+					topscroll()
+				}
+			}
+
+			document_hidden = document[hidden];
+		}
+	});
+}
+function topscroll () {
+	var obj = document.querySelector("body")
+	var ot = findpos(obj);
+	window.scrollTo(0,ot);
+	setTimeout(location.reload(), 200);
+}
 function removeThis(jNode) {
 	jNode.remove()
 }
@@ -82,7 +158,15 @@ function containsAnyStringLower(str, substrings) {
 	}
 	return null;
 }
-
+function equalsAnyStringLower(str, substrings) {
+	for (var i = 0; i != substrings.length; i++) {
+		var substring = substrings[i].toLowerCase()
+			if (str == substring) {
+				return true;
+			}
+	}
+	return null;
+}
 function containsAnyTrue(str, substrings) {
 	for (var i = 0; i != substrings.length; i++) {
 		var substring = substrings[i];
@@ -98,7 +182,22 @@ function triggerEvent(node, eventType) {
 	clickEvent.initEvent(eventType, true, true);
 	node.dispatchEvent(clickEvent);
 }
-
+function replaceValS(selector, value) {
+	const el = selector
+	console.log("replaceValue");
+	if (el) {
+		el.focus();
+		el.select();
+		if (!document.execCommand('insertText', false, value)) {
+			// Fallback for Firefox: just replace the value
+			el.value = 'new text';
+		}
+		el.dispatchEvent(new Event('change', {
+				bubbles: true
+			})); // usually not needed
+	}
+	return el;
+}
 function replaceVal(selector, value) {
 	const el = document.querySelector(selector);
 	console.log("replaceValue");
@@ -115,9 +214,19 @@ function replaceVal(selector, value) {
 	}
 	return el;
 }
-
+function getDomain(url) {
+	var result
+	var match
+	if (match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n\?\=]+)/im)) {
+		result = match[1]
+		if (match = result.match(/^[^\.]+\.(.+\..+)$/)) {
+			result = match[1]
+		}
+	}
+	return result
+}
 function getPageFromUrl(url) {
-	const match = url.match(/(?:\/page\/|[?&]page=|page-)([1-9]\d*)/)
+	const match = url.match(/(?:\/page\/|[?&]p=|[?&]page=|page-)([1-9]\d*)/)
 		if (match) {
 			return Number(match[1]);
 		}
@@ -198,7 +307,7 @@ function ClickThis(jNode) {
 	// jNode.click()
 	var clickEvent = document.createEvent('MouseEvents');
 	clickEvent.initEvent('click', true, true);
-	jNode.dispatchEvent(clickEvent);
+	jNode[0].dispatchEvent(clickEvent);
 }
 
 function getInnermostHover() {
