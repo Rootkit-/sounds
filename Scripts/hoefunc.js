@@ -1,12 +1,4 @@
-function findpos(obj) {
-	var curtop = 0;
-	if (obj.offsetParent) {
-		do {
-			curtop += obj.offsetTop;
-		} while (obj = obj.offsetParent);
-		return curtop;
-	}
-}
+
 function selectItemInDropdownList(selectElement, ov) {
   const optionToSelect = '' + ov
   const options = selectElement.getElementsByTagName('option')
@@ -17,6 +9,72 @@ function selectItemInDropdownList(selectElement, ov) {
     }
   }
   return false // failed
+}
+
+/*---------------------------------*/
+/*---- Window View ETC ----*/
+/*---------------------------------*/
+function isElementInViewport (el) {
+
+	// Special bonus for those using jQuery
+	if (typeof jQuery === "function" && el instanceof jQuery) {
+		el = el[0];
+	}
+
+	var rect = el.getBoundingClientRect();
+
+	return (
+		rect.top >= 0 &&
+		rect.left >= 0 &&
+		rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /* or $(window).height() */
+		rect.right <= (window.innerWidth || document.documentElement.clientWidth) /* or $(window).width() */
+	);
+}
+function getViewportOffsets($e) {
+  var $window = $(window),
+    scrollLeft = $window.scrollLeft(),
+    scrollTop = $window.scrollTop(),
+    offset = $e.offset(),
+    rect1 = { x1: scrollLeft, y1: scrollTop, x2: scrollLeft + $window.width(), y2: scrollTop + $window.height() },
+    rect2 = { x1: offset.left, y1: offset.top, x2: offset.left + $e.width(), y2: offset.top + $e.height() };
+  return {
+    left: offset.left - scrollLeft,
+    top: offset.top - scrollTop,
+    insideViewport: rect1.x1 < rect2.x2 && rect1.x2 > rect2.x1 && rect1.y1 < rect2.y2 && rect1.y2 > rect2.y1
+  };
+}
+
+function checkScrollDirectionIsUp(event) {
+	if (event.wheelDelta) {
+		return event.wheelDelta > 0;
+	}
+	return event.deltaY < 0;
+}
+
+function getScrollh() {
+	if(typeof wn.scrollMaxY == 'number') return wn.scrollMaxY;
+
+	var node = d.compatMode == 'BackCompat' ? d.body : d.documentElement;
+	return node.scrollHeight
+}
+function getScrollc() {
+	if(typeof wn.scrollMaxY == 'number') return wn.scrollMaxY;
+
+	var node = d.compatMode == 'BackCompat' ? d.body : d.documentElement;
+	return node.clientHeight;
+
+}
+function getScrollMaxY() {
+	if(typeof wn.scrollMaxY == 'number') return wn.scrollMaxY;
+
+	var node = d.compatMode == 'BackCompat' ? d.body : d.documentElement;
+	return node.scrollHeight - node.clientHeight;
+
+}
+function _get_scroll_percentage() {
+	return (
+		(_get_window_Yscroll() + _get_window_height()) / _get_doc_height()
+	) * 100;
 }
 function checkVisible(elm) {
 	var rect = elm.getBoundingClientRect();
@@ -54,6 +112,21 @@ function _get_scroll_percentage() {
 	return (
 		(_get_window_Yscroll() + _get_window_height()) / _get_doc_height()
 	) * 100;
+}
+
+
+
+/*---------------------------------*/
+/*--------    Scroll     -----------*/
+/*---------------------------------*/
+function findpos(obj) {
+	var curtop = 0;
+	if (obj.offsetParent) {
+		do {
+			curtop += obj.offsetTop;
+		} while (obj = obj.offsetParent);
+		return curtop;
+	}
 }
 function GoTo(obj) {
 	var ot = findpos(obj);
@@ -135,19 +208,7 @@ function containsAnyString(str, substrings) {
 	}
 	return null;
 }
-function getViewportOffsets($e) {
-  var $window = $(window),
-    scrollLeft = $window.scrollLeft(),
-    scrollTop = $window.scrollTop(),
-    offset = $e.offset(),
-    rect1 = { x1: scrollLeft, y1: scrollTop, x2: scrollLeft + $window.width(), y2: scrollTop + $window.height() },
-    rect2 = { x1: offset.left, y1: offset.top, x2: offset.left + $e.width(), y2: offset.top + $e.height() };
-  return {
-    left: offset.left - scrollLeft,
-    top: offset.top - scrollTop,
-    insideViewport: rect1.x1 < rect2.x2 && rect1.x2 > rect2.x1 && rect1.y1 < rect2.y2 && rect1.y2 > rect2.y1
-  };
-}
+
 
 function containsAnyStringLower(str, substrings) {
 	for (var i = 0; i != substrings.length; i++) {
