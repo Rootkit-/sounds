@@ -71,11 +71,6 @@ function getScrollMaxY() {
 	return node.scrollHeight - node.clientHeight;
 
 }
-function _get_scroll_percentage() {
-	return (
-		(_get_window_Yscroll() + _get_window_height()) / _get_doc_height()
-	) * 100;
-}
 function checkVisible(elm) {
 	var rect = elm.getBoundingClientRect();
 	var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
@@ -314,7 +309,20 @@ function CE(type, text, floatclass, floatid, floatstyle) {
 			button.style = floatstyle; //button.style = "clear: left"
 		return button
 }
-
+function CS(type, srcc, floatclass, floatid) {
+	const script = document.createElement(type)
+		if(type == 'link'){
+			script.rel="stylesheet"
+		}
+		if (srcc !== undefined)
+			script.src = srcc;
+		if (floatclass !== undefined)
+			script.className = floatclass;
+		if (floatid !== undefined)
+			script.id = floatid;
+		
+		return script
+}
 function CA(text, floathref, floatclass, floatid, floatstyle, floattarg) {
 	const button = document.createElement('a')
 		if (text !== undefined)
