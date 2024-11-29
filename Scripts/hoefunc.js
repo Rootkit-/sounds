@@ -10,7 +10,7 @@ function selectItemInDropdownList(selectElement, ov) {
   }
   return false // failed
 }
-
+/*---------------------------------*/
 /*---------------------------------*/
 /*---- Window View ETC ----*/
 /*---------------------------------*/
@@ -232,7 +232,7 @@ function containsAnyTrue(str, substrings) {
 	}
 	return false;
 }
-
+	
 function triggerEvent(node, eventType) {
 	var clickEvent = document.createEvent('MouseEvents');
 	clickEvent.initEvent(eventType, true, true);
@@ -309,18 +309,18 @@ function CE(type, text, floatclass, floatid, floatstyle) {
 			button.style = floatstyle; //button.style = "clear: left"
 		return button
 }
-function CS(type, srcc, floatclass, floatid) {
+function CS(type, srcc, floatclass) {
 	const script = document.createElement(type)
 		if(type == 'link'){
+			if (srcc !== undefined)
+				script.href = srcc;
 			script.rel="stylesheet"
+		} else{
+			if (srcc !== undefined)
+				script.src = srcc;
 		}
-		if (srcc !== undefined)
-			script.src = srcc;
 		if (floatclass !== undefined)
 			script.className = floatclass;
-		if (floatid !== undefined)
-			script.id = floatid;
-		
 		return script
 }
 function CA(text, floathref, floatclass, floatid, floatstyle, floattarg) {
